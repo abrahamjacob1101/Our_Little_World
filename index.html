@@ -2,669 +2,819 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Our Little World ❤️</title>
 
 <style>
-*{box-sizing:border-box}
-body{margin:0;overflow:hidden;background:#21172e;color:white;font-family:Arial}
-#game{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
-#title{position:absolute;top:12px;width:100%;text-align:center;font-size:22px;color:#ffd2eb;text-shadow:0 0 12px #ff55b5;pointer-events:none}
-#message{position:absolute;top:48px;width:100%;text-align:center;color:#ffe5f2;font-size:14px;pointer-events:none}
-#status{position:absolute;top:72px;width:100%;text-align:center;font-size:11px;color:#eac5e7;pointer-events:none}
-#joy{position:absolute;bottom:25px;left:20px;width:115px;height:115px;border-radius:50%;background:#ffffff25;border:2px solid #ffffff80;touch-action:none}
-#stick{position:absolute;left:32px;top:32px;width:48px;height:48px;border-radius:50%;background:#ffb5dc;box-shadow:0 0 15px #ff8bc9}
-#actions{position:absolute;right:10px;bottom:20px;display:grid;grid-template-columns:repeat(2,68px);gap:8px}
-button{border:1px solid #ffffff70;border-radius:18px;background:#a54e91;color:white;padding:12px 2px;font-size:12px;box-shadow:0 3px 12px #0005}
-#cameraHint{position:absolute;top:100px;width:100%;text-align:center;font-size:10px;color:#ffffff99;pointer-events:none}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #24152e;
+  font-family: Arial, sans-serif;
+  touch-action: none;
+}
+
+#game {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+
+#title {
+  position: absolute;
+  top: 15px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 21px;
+  font-weight: bold;
+  text-shadow: 0 0 15px #ff4da6;
+  pointer-events: none;
+  z-index: 5;
+}
+
+#message {
+  position: absolute;
+  top: 55px;
+  width: 100%;
+  text-align: center;
+  color: #fff0fa;
+  font-size: 14px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+#joy {
+  position: absolute;
+  bottom: 35px;
+  left: 28px;
+  width: 125px;
+  height: 125px;
+  border-radius: 50%;
+  background: #ffffff30;
+  border: 3px solid #ffffff90;
+  z-index: 10;
+  touch-action: none;
+}
+
+#stick {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  background: #ff9ed5;
+  border-radius: 50%;
+  left: 35px;
+  top: 35px;
+  box-shadow: 0 0 20px #ff6bc4;
+  pointer-events: none;
+}
+
+#actions {
+  position: absolute;
+  bottom: 25px;
+  right: 12px;
+  width: 48%;
+  max-width: 280px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+  z-index: 10;
+}
+
+button {
+  min-height: 51px;
+  border: 2px solid #ffffff80;
+  border-radius: 30px;
+  background: #a84991;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: 0 4px 12px #0004;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+button:active {
+  background: #e66bb8;
+  transform: scale(.95);
+}
+
+#cameraHint {
+  position: absolute;
+  top: 85px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  opacity: .8;
+  font-size: 11px;
+  pointer-events: none;
+}
+
+#status {
+  position: absolute;
+  top: 110px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 13px;
+  pointer-events: none;
+}
+
+@media(max-height: 600px) {
+  #joy {
+    width: 95px;
+    height: 95px;
+    bottom: 15px;
+    left: 15px;
+  }
+  #stick {
+    left: 24px;
+    top: 24px;
+  }
+  #actions {
+    bottom: 12px;
+  }
+  button {
+    min-height: 39px;
+    font-size: 12px;
+  }
+}
 </style>
 </head>
 
 <body>
 
 <div id="title">Our Little World ❤️</div>
-<div id="message">A little universe made for us ✨</div>
-<div id="status">Welcome to our museum</div>
-<div id="cameraHint">Drag the screen to look around</div>
+<div id="message">Welcome to our romantic museum ✨</div>
+<div id="cameraHint">Drag the museum screen to rotate the camera</div>
+<div id="status">Explore your little world together 💗</div>
 
 <canvas id="game"></canvas>
 
-<div id="joy"><div id="stick"></div></div>
-
-<div id="actions">
-<button onclick="act('kiss')">💋 Kiss</button>
-<button onclick="act('hug')">🤗 Hug</button>
-<button onclick="act('dance')">💃 Dance</button>
-<button onclick="act('blush')">🥰 Blush</button>
-<button onclick="act('happy')">❤️ Happy</button>
-<button onclick="act('sit')">🪑 Sit</button>
-<button onclick="act('wave')">👋 Wave</button>
-<button onclick="act('idle')">✨ Stand</button>
+<div id="joy">
+  <div id="stick"></div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<div id="actions">
+  <button onclick="react('kiss')">💋 Kiss</button>
+  <button onclick="react('hug')">🤗 Hug</button>
+  <button onclick="react('dance')">💃 Dance</button>
+  <button onclick="react('blush')">🥰 Blush</button>
+  <button onclick="react('happy')">❤️ Happy</button>
+  <button onclick="react('sit')">🪑 Sit</button>
+  <button onclick="react('wave')">👋 Wave</button>
+  <button onclick="react('stand')">✨ Stand</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
 
 <script>
-const msg=document.getElementById('message');
-const status=document.getElementById('status');
+if (!window.THREE) {
+  document.getElementById("status").textContent =
+    "3D library failed to load. Please check your internet connection.";
+  throw new Error("Three.js not loaded");
+}
 
-if(!window.THREE){
- status.textContent='3D library unavailable. Check internet and reload.';
-}else{
+// SCENE
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x6b326c);
+scene.fog = new THREE.Fog(0x6b326c, 18, 42);
 
-try{
+const camera = new THREE.PerspectiveCamera(
+  65, window.innerWidth / window.innerHeight, 0.1, 100
+);
 
-const scene=new THREE.Scene();
-scene.background=new THREE.Color(0x30203f);
-scene.fog=new THREE.Fog(0x30203f,22,65);
-
-const camera=new THREE.PerspectiveCamera(65,innerWidth/innerHeight,.1,100);
-
-const renderer=new THREE.WebGLRenderer({
- canvas:document.getElementById('game'),
- antialias:true
+const renderer = new THREE.WebGLRenderer({
+  canvas: document.getElementById("game"),
+  antialias: true
 });
 
-renderer.setSize(innerWidth,innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));
-renderer.outputEncoding=THREE.sRGBEncoding;
-renderer.toneMapping=THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure=.8;
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.7));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.2;
 
-// LIGHTING
+// LIGHTS
+scene.add(new THREE.HemisphereLight(0xffdafa, 0x56324b, 2));
 
-scene.add(new THREE.HemisphereLight(0xffd6ed,0x30243f,1.7));
+const mainLight = new THREE.DirectionalLight(0xffffff, 2.5);
+mainLight.position.set(5, 12, 8);
+mainLight.castShadow = true;
+scene.add(mainLight);
 
-const warm=new THREE.PointLight(0xffa5d8,2.2,35);
-warm.position.set(0,8,0);
-scene.add(warm);
+const pinkLight = new THREE.PointLight(0xff65c7, 90, 20);
+pinkLight.position.set(0, 5, 0);
+scene.add(pinkLight);
 
-const gold=new THREE.PointLight(0xffcf9b,1.5,25);
-gold.position.set(-8,5,-5);
-scene.add(gold);
+const warmLight = new THREE.PointLight(0xffd5a8, 70, 18);
+warmLight.position.set(-7, 4, -5);
+scene.add(warmLight);
 
-function mat(color,roughness=.8){
- return new THREE.MeshStandardMaterial({color,roughness});
+// MATERIALS
+function mat(color, roughness = 0.75) {
+  return new THREE.MeshStandardMaterial({
+    color,
+    roughness
+  });
 }
 
-function block(w,h,d,x,y,z,color){
- const m=new THREE.Mesh(
-  new THREE.BoxGeometry(w,h,d),
-  mat(color)
- );
- m.position.set(x,y,z);
- scene.add(m);
- return m;
-}
+const floorMat = mat(0xeeb5df);
+const wallMat = mat(0xd96ac5);
+const whiteMat = mat(0xffe9fa);
+const goldMat = mat(0xd9a44c, 0.4);
+const darkMat = mat(0x52244f);
 
-function sphere(parent,r,x,y,z,color){
- const m=new THREE.Mesh(
-  new THREE.SphereGeometry(r,20,16),
-  mat(color)
- );
- m.position.set(x,y,z);
- parent.add(m);
- return m;
+// BOX CREATOR
+function box(x,y,z,w,h,d,material) {
+  const mesh = new THREE.Mesh(
+    new THREE.BoxGeometry(w,h,d), material
+  );
+  mesh.position.set(x,y,z);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  scene.add(mesh);
+  return mesh;
 }
 
 // MUSEUM FLOOR
-
-block(34,.35,34,0,-.25,0,0x765474);
+box(0,-0.2,0,24,0.4,30,floorMat);
 
 // MUSEUM WALLS
+box(0,5,-15,24,10,0.5,wallMat);
+box(-12,5,0,0.5,10,30,wallMat);
+box(12,5,0,0.5,10,30,wallMat);
 
-block(34,10,.5,0,4.8,-17,0x53375f);
-block(.5,10,34,-17,4.8,0,0x53375f);
-block(.5,10,34,17,4.8,0,0x53375f);
+// CEILING
+box(0,10,0,24,0.3,30,mat(0xf3a5dd));
 
-// DECORATIVE PILLARS
+// WALL DECORATIONS
+function frame(x,y,z,rotation=0) {
+  const group = new THREE.Group();
 
-for(let x=-14;x<=14;x+=7){
- block(.55,8,.55,x,3.8,-13,0xd49ac2);
- block(.55,8,.55,x,3.8,13,0xd49ac2);
+  const border = new THREE.Mesh(
+    new THREE.BoxGeometry(2.2,2.6,0.18),goldMat
+  );
+
+  const inner = new THREE.Mesh(
+    new THREE.BoxGeometry(1.9,2.3,0.1),whiteMat
+  );
+  inner.position.z = 0.12;
+
+  const picture = new THREE.Mesh(
+    new THREE.BoxGeometry(1.65,2.05,0.06),
+    mat(0xffb2dc)
+  );
+  picture.position.z = 0.19;
+
+  group.add(border,inner,picture);
+  group.position.set(x,y,z);
+  group.rotation.y = rotation;
+  scene.add(group);
 }
 
-// MEMORY FRAMES
-
-for(let x=-12;x<=12;x+=6){
- block(3,3,.2,x,3.7,-16.5,0xf0bfdc);
- block(2.55,2.55,.12,x,3.7,-16.3,0x44304e);
- block(2.2,2.2,.08,x,3.7,-16.15,0xa77aab);
+for(let i=0;i<5;i++){
+  frame(-9+i*4.5,5,-14.65);
 }
 
-// DECORATIVE LIGHTS
-
-for(let i=0;i<22;i++){
- const lightBall=new THREE.Mesh(
-  new THREE.SphereGeometry(.09,12,12),
-  new THREE.MeshBasicMaterial({color:0xffd6a0})
- );
- lightBall.position.set(
-  -13+(i%11)*2.6,
-  6+(i%3)*.5,
-  -12+Math.floor(i/11)*8
- );
- scene.add(lightBall);
+for(let i=0;i<5;i++){
+  frame(-11.65,5,-10+i*5,Math.PI/2);
+  frame(11.65,5,-10+i*5,-Math.PI/2);
 }
+
+// PILLARS
+for(let x of [-9,-5,5,9]){
+  box(x,4,0,0.45,8,0.45,whiteMat);
+}
+
+// DECORATIVE HEARTS
+function heart(x,y,z) {
+  const group = new THREE.Group();
+
+  const a = new THREE.Mesh(
+    new THREE.SphereGeometry(.35,16,16),
+    mat(0xff4d9f)
+  );
+  const b = a.clone();
+  a.position.x = -.2;
+  b.position.x = .2;
+
+  const bottom = new THREE.Mesh(
+    new THREE.ConeGeometry(.34,.65,16),
+    mat(0xff4d9f)
+  );
+  bottom.rotation.z = Math.PI;
+  bottom.position.y = -.38;
+
+  group.add(a,b,bottom);
+  group.position.set(x,y,z);
+  scene.add(group);
+}
+
+heart(-8,7,-14.3);
+heart(8,7,-14.3);
 
 // BENCH
+const benchMat = mat(0x8c3c78);
+box(0,1,-5,3,0.25,1,benchMat);
+box(0,1.8,-5.45,3,1.5,.2,benchMat);
 
-const bench=new THREE.Group();
-
-function benchPart(w,h,d,x,y,z,c){
- const o=new THREE.Mesh(
-  new THREE.BoxGeometry(w,h,d),
-  mat(c)
- );
- o.position.set(x,y,z);
- bench.add(o);
+for(let x of [-1.25,1.25]){
+  box(x,.45,-4.7,.18,.9,.18,goldMat);
+  box(x,.45,-5.3,.18,.9,.18,goldMat);
 }
 
-benchPart(3,.25,.9,0,.9,0,0xd99bc2);
-benchPart(3,.22,.2,0,1.45,-.35,0xd99bc2);
+// CHARACTER CREATOR
+function createCharacter(bodyColor,hairColor) {
+  const root = new THREE.Group();
 
-for(let x of [-1.2,1.2]){
- benchPart(.16,.8,.16,x,.4,0,0x765174);
-}
+  const skin = mat(0xffd0b6);
+  const bodyMaterial = mat(bodyColor);
+  const hair = mat(hairColor);
+  const shoes = mat(0x50254d);
+  const eyes = mat(0x30202b);
 
-bench.position.set(0,0,-3);
-scene.add(bench);
+  function sphere(parent,x,y,z,sx,sy,sz,material) {
+    const m = new THREE.Mesh(
+      new THREE.SphereGeometry(1,20,16),material
+    );
+    m.position.set(x,y,z);
+    m.scale.set(sx,sy,sz);
+    m.castShadow = true;
+    parent.add(m);
+    return m;
+  }
 
-// DECORATIVE FLOWERS
+  // BODY
+  const body = new THREE.Group();
+  body.position.y = 1.25;
+  root.add(body);
 
-for(let x of [-11,-8,8,11]){
- block(.13,1,.13,x,.5,3,0x64875d);
- sphere(scene,.38,x,1.2,3,0xff9dcf);
- sphere(scene,.2,x+.25,1.35,3,0xffd2e9);
-}
+  sphere(body,0,0,0,.43,.58,.27,bodyMaterial);
 
-// CHARACTER CREATION
+  // NECK
+  sphere(body,0,.62,0,.15,.19,.15,skin);
 
-function createCharacter(color,hairColor){
+  // HEAD
+  const head = new THREE.Group();
+  head.position.y = .95;
+  body.add(head);
 
- const root=new THREE.Group();
- const model=new THREE.Group();
- root.add(model);
+  sphere(head,0,.12,0,.48,.53,.42,skin);
 
- const skin=mat(0xffd2bd);
- const outfit=mat(color);
- const hairMat=mat(hairColor);
- const dark=mat(0x30202a);
+  // HAIR
+  sphere(head,0,.48,-.03,.49,.28,.43,hair);
 
- // BODY
+  // FRONT HAIR
+  sphere(head,0,.48,.27,.4,.16,.18,hair);
 
- const torso=new THREE.Mesh(
-  new THREE.CylinderGeometry(.38,.32,.85,16),
-  outfit
- );
- torso.position.y=1.35;
- model.add(torso);
+  // EYES
+  sphere(head,-.17,.16,.38,.045,.075,.025,eyes);
+  sphere(head,.17,.16,.38,.045,.075,.025,eyes);
 
- // NECK
-
- const neck=new THREE.Mesh(
-  new THREE.CylinderGeometry(.12,.14,.2,12),
-  skin
- );
- neck.position.y=1.82;
- model.add(neck);
-
- // HEAD
-
- const head=new THREE.Group();
- head.position.y=2.18;
- model.add(head);
-
- sphere(head,.38,0,0,0,0xffd2bd);
-
- // HAIR
-
- const cap=new THREE.Mesh(
-  new THREE.SphereGeometry(.39,20,16,0,Math.PI*2,0,Math.PI/2),
-  hairMat
- );
- cap.position.y=.12;
- head.add(cap);
-
- sphere(head,.22,-.19,.13,.16,hairColor);
- sphere(head,.2,.17,.12,.18,hairColor);
-
- // EYES
-
- sphere(head,.045,-.13,-.34,.02,0x38212b);
- sphere(head,.045,.13,-.34,.02,0x38212b);
-
- // SMILE
-
- const smile=new THREE.Mesh(
-  new THREE.TorusGeometry(.09,.018,8,16,Math.PI),
-  dark
- );
- smile.position.set(0,-.14,-.35);
- smile.rotation.z=Math.PI;
- head.add(smile);
-
- // ARMS
-
- const arms=[];
-
- for(let side of [-1,1]){
-
-  const pivot=new THREE.Group();
-  pivot.position.set(side*.43,1.65,0);
-  model.add(pivot);
-
-  const arm=new THREE.Mesh(
-   new THREE.CylinderGeometry(.12,.10,.65,12),
-   skin
-  );
-  arm.position.y=-.36;
-  pivot.add(arm);
-
-  sphere(pivot,.13,0,-.72,0,0xffd2bd);
-
-  arms.push(pivot);
- }
-
- // LEGS
-
- const legs=[];
-
- for(let side of [-1,1]){
-
-  const pivot=new THREE.Group();
-  pivot.position.set(side*.2,.82,0);
-  model.add(pivot);
-
-  const leg=new THREE.Mesh(
-   new THREE.CylinderGeometry(.16,.13,.65,12),
-   outfit
-  );
-  leg.position.y=-.37;
-  pivot.add(leg);
-
-  const shoe=new THREE.Mesh(
-   new THREE.SphereGeometry(.19,12,12),
-   mat(0xf2d4e6)
-  );
-  shoe.position.set(0,-.72,-.06);
-  pivot.add(shoe);
-
-  legs.push(pivot);
- }
-
- // BLUSH
-
- const cheeks=[];
-
- for(let side of [-1,1]){
-  const cheek=new THREE.Mesh(
-   new THREE.SphereGeometry(.07,12,12),
-   new THREE.MeshBasicMaterial({
-    color:0xff629d,
+  // CHEEKS
+  const cheekMat = new THREE.MeshBasicMaterial({
+    color:0xff8da9,
     transparent:true,
-    opacity:0
-   })
+    opacity:.7
+  });
+
+  const leftCheek = sphere(head,-.31,.02,.34,.1,.055,.025,cheekMat);
+  const rightCheek = sphere(head,.31,.02,.34,.1,.055,.025,cheekMat);
+
+  // SMILE
+  const smile = new THREE.Mesh(
+    new THREE.TorusGeometry(.09,.018,8,20,Math.PI),
+    eyes
   );
-  cheek.position.set(side*.24,-.1,-.3);
-  head.add(cheek);
-  cheeks.push(cheek);
- }
+  smile.position.set(0,-.03,.39);
+  smile.rotation.z = Math.PI;
+  head.add(smile);
 
- return {root,model,head,arms,legs,cheeks};
+  // ARMS
+  const arms = [];
+
+  for(let side of [-1,1]){
+    const arm = new THREE.Group();
+    arm.position.set(side*.43,.36,0);
+    body.add(arm);
+
+    sphere(arm,0,-.3,0,.14,.38,.14,bodyMaterial);
+    sphere(arm,0,-.65,.02,.13,.13,.13,skin);
+    arms.push(arm);
+  }
+
+  // LEGS
+  const legs = [];
+
+  for(let side of [-1,1]){
+    const leg = new THREE.Group();
+    leg.position.set(side*.2,-.48,0);
+    root.add(leg);
+
+    sphere(leg,0,-.4,0,.19,.48,.2,bodyMaterial);
+    sphere(leg,0,-.85,.08,.2,.13,.3,shoes);
+
+    legs.push(leg);
+  }
+
+  root.position.y=0;
+  scene.add(root);
+
+  return {
+    root,body,head,arms,legs,
+    leftCheek,rightCheek,
+    baseY:0,
+    action:"stand",
+    actionStart:0,
+    moving:false,
+    phase:Math.random()*5
+  };
 }
 
-// CREATE PLAYER
+// TWO CHARACTERS
+const player = createCharacter(0x6796ff,0x342044);
+const partner = createCharacter(0xff70bc,0x50233d);
 
-const player=createCharacter(0x8db7ed,0x493044);
+player.root.position.set(-1,0,3);
+partner.root.position.set(1,0,-1);
+partner.root.rotation.y=Math.PI;
 
-scene.add(player.root);
-player.root.position.set(0,0,5);
+// MOVEMENT SETTINGS
+let joyX=0;
+let joyY=0;
+let cameraAngle=0;
+let cameraHeight=4.5;
+let cameraDistance=8;
+let cameraDragging=false;
+let previousX=0;
+let previousY=0;
 
-// ACTION SYSTEM
+const joy=document.getElementById("joy");
+const stick=document.getElementById("stick");
 
-let action='idle';
-let actionStart=0;
-let actionLength=2.5;
+// JOYSTICK TOUCH CONTROL
+let joyPointer=null;
 
-function act(name){
+function moveStick(e){
+  if(joyPointer!==e.pointerId)return;
 
- action=name;
- actionStart=performance.now()/1000;
+  const rect=joy.getBoundingClientRect();
+  const cx=rect.left+rect.width/2;
+  const cy=rect.top+rect.height/2;
 
- const labels={
-  kiss:'Sending a sweet kiss 💋',
-  hug:'A warm hug for you 🤗',
-  dance:'Dancing in our little world 💃',
-  blush:'You make me blush 🥰',
-  happy:'So happy with you ❤️',
-  sit:'Enjoying our little bench 🪑',
-  wave:'Hello, my love! 👋',
-  idle:'Ready to explore ✨'
- };
+  let dx=e.clientX-cx;
+  let dy=e.clientY-cy;
 
- msg.textContent=labels[name]||name;
+  const max=43;
+  const length=Math.sqrt(dx*dx+dy*dy);
 
- if(name==='sit'){
-  player.root.position.set(0,0,-3);
-  player.root.rotation.y=Math.PI;
- }
+  if(length>max){
+    dx=dx/length*max;
+    dy=dy/length*max;
+  }
+
+  joyX=dx/max;
+  joyY=dy/max;
+
+  stick.style.transform=
+    `translate(${dx}px,${dy}px)`;
 }
 
-// JOYSTICK
-
-let mx=0,my=0;
-
-const joy=document.getElementById('joy');
-const stick=document.getElementById('stick');
-
-function joyMove(e){
-
- const r=joy.getBoundingClientRect();
-
- let x=e.clientX-r.left-r.width/2;
- let y=e.clientY-r.top-r.height/2;
-
- const len=Math.hypot(x,y);
-
- if(len>36){
-  x=x/len*36;
-  y=y/len*36;
- }
-
- mx=x/36;
- my=y/36;
-
- stick.style.left=32+x+'px';
- stick.style.top=32+y+'px';
-}
-
-function joyStop(){
-
- mx=0;
- my=0;
-
- stick.style.left='32px';
- stick.style.top='32px';
-}
-
-joy.addEventListener('pointerdown',e=>{
- joy.setPointerCapture(e.pointerId);
- joyMove(e);
+joy.addEventListener("pointerdown",e=>{
+  e.preventDefault();
+  joyPointer=e.pointerId;
+  joy.setPointerCapture(e.pointerId);
+  moveStick(e);
 });
 
-joy.addEventListener('pointermove',e=>{
- if(e.buttons)joyMove(e);
+joy.addEventListener("pointermove",e=>{
+  if(joyPointer===e.pointerId){
+    e.preventDefault();
+    moveStick(e);
+  }
 });
 
-joy.addEventListener('pointerup',joyStop);
-joy.addEventListener('pointercancel',joyStop);
-
-// CAMERA ROTATION
-
-let yaw=Math.PI;
-let pitch=.25;
-
-let dragging=false;
-let lastX=0;
-let lastY=0;
-let dragPointer=null;
-
-renderer.domElement.addEventListener('pointerdown',e=>{
- dragging=true;
- dragPointer=e.pointerId;
- lastX=e.clientX;
- lastY=e.clientY;
-});
-
-renderer.domElement.addEventListener('pointermove',e=>{
-
- if(!dragging||e.pointerId!==dragPointer)return;
-
- yaw-=(e.clientX-lastX)*.008;
- pitch+=(e.clientY-lastY)*.004;
-
- pitch=Math.max(-.1,Math.min(.8,pitch));
-
- lastX=e.clientX;
- lastY=e.clientY;
-});
-
-function endDrag(){
- dragging=false;
- dragPointer=null;
+function resetJoy(){
+  joyPointer=null;
+  joyX=0;
+  joyY=0;
+  stick.style.transform="translate(0px,0px)";
 }
 
-renderer.domElement.addEventListener('pointerup',endDrag);
-renderer.domElement.addEventListener('pointercancel',endDrag);
+joy.addEventListener("pointerup",resetJoy);
+joy.addEventListener("pointercancel",resetJoy);
+joy.addEventListener("lostpointercapture",resetJoy);
+
+// CAMERA ROTATION BY DRAGGING SCREEN
+renderer.domElement.addEventListener("pointerdown",e=>{
+  cameraDragging=true;
+  previousX=e.clientX;
+  previousY=e.clientY;
+});
+
+window.addEventListener("pointermove",e=>{
+  if(!cameraDragging)return;
+
+  const dx=e.clientX-previousX;
+  const dy=e.clientY-previousY;
+
+  cameraAngle-=dx*.006;
+  cameraHeight-=dy*.018;
+  cameraHeight=Math.max(2.5,Math.min(8,cameraHeight));
+
+  previousX=e.clientX;
+  previousY=e.clientY;
+});
+
+window.addEventListener("pointerup",()=>{
+  cameraDragging=false;
+});
+
+renderer.domElement.addEventListener("wheel",e=>{
+  cameraDistance+=e.deltaY*.008;
+  cameraDistance=Math.max(4,Math.min(13,cameraDistance));
+});
+
+// KEYBOARD CONTROL
+const keys={};
+
+window.addEventListener("keydown",e=>{
+  keys[e.key.toLowerCase()]=true;
+});
+
+window.addEventListener("keyup",e=>{
+  keys[e.key.toLowerCase()]=false;
+});
+
+// REACTIONS
+const message=document.getElementById("message");
+
+function react(type){
+  player.action=type;
+  player.actionStart=performance.now()/1000;
+
+  if(type==="kiss"){
+    message.textContent="Sending you a kiss 💋";
+    heartParticles();
+  }
+  if(type==="hug"){
+    message.textContent="Come here, my love 🤗";
+    heartParticles();
+  }
+  if(type==="dance")message.textContent="Let's dance together 💃";
+  if(type==="blush")message.textContent="Feeling shy 🥰";
+  if(type==="happy")message.textContent="You make me happy ❤️";
+  if(type==="sit")message.textContent="Let's sit together 🪑";
+  if(type==="wave")message.textContent="Hello my love 👋";
+  if(type==="stand")message.textContent="Standing beside you ✨";
+
+  if(type==="sit"){
+    player.root.position.x=0;
+    player.root.position.z=-3.5;
+  }
+
+  if(type==="hug" || type==="kiss"){
+    partner.action=type;
+    partner.actionStart=performance.now()/1000;
+  }
+}
 
 // HEART PARTICLES
+const particles=[];
 
-const hearts=[];
+function heartParticles(){
+  for(let i=0;i<9;i++){
+    const p=new THREE.Mesh(
+      new THREE.SphereGeometry(.13,10,10),
+      new THREE.MeshBasicMaterial({color:0xff4da6})
+    );
 
-function heartParticle(){
+    p.position.copy(player.root.position);
+    p.position.y+=2.6;
+    p.velocity=new THREE.Vector3(
+      (Math.random()-.5)*2,
+      1+Math.random()*2,
+      (Math.random()-.5)*2
+    );
 
- const h=new THREE.Mesh(
-  new THREE.SphereGeometry(.1,8,8),
-  new THREE.MeshBasicMaterial({
-   color:0xff83c6,
-   transparent:true
-  })
- );
-
- h.position.set(
-  player.root.position.x+(Math.random()-.5),
-  2.5,
-  player.root.position.z
- );
-
- scene.add(h);
- hearts.push({mesh:h,life:1});
+    scene.add(p);
+    particles.push({mesh:p,life:2});
+  }
 }
 
-let lastHeart=0;
-
-// GAME LOOP
-
+// ANIMATION ENGINE
 const clock=new THREE.Clock();
 
-let walkTime=0;
+function animateCharacter(c,time,delta){
+  const elapsed=time-c.actionStart;
 
-function animate(){
+  c.root.position.y=c.baseY;
+  c.body.rotation.set(0,0,0);
+  c.head.rotation.set(0,0,0);
 
- requestAnimationFrame(animate);
+  c.arms.forEach(a=>a.rotation.set(0,0,0));
+  c.legs.forEach(l=>l.rotation.set(0,0,0));
 
- const t=clock.getElapsedTime();
+  c.leftCheek.scale.set(.1,.055,.025);
+  c.rightCheek.scale.set(.1,.055,.025);
 
- const moving=Math.abs(mx)+Math.abs(my)>.1;
+  // WALKING
+  if(c.moving){
+    c.legs[0].rotation.x=Math.sin(time*10)*.55;
+    c.legs[1].rotation.x=-Math.sin(time*10)*.55;
 
- if(moving){
+    c.arms[0].rotation.x=-Math.sin(time*10)*.45;
+    c.arms[1].rotation.x=Math.sin(time*10)*.45;
 
-  action='walk';
-  walkTime+=.12;
-
-  player.root.position.x+=
-   Math.sin(yaw)*my*.09+
-   Math.cos(yaw)*mx*.09;
-
-  player.root.position.z+=
-   Math.cos(yaw)*my*.09-
-   Math.sin(yaw)*mx*.09;
-
-  player.root.rotation.y=Math.atan2(mx,-my)+yaw;
-
- }else if(action==='walk'){
-  action='idle';
- }
-
- player.root.position.x=Math.max(-15,Math.min(15,player.root.position.x));
- player.root.position.z=Math.max(-15,Math.min(15,player.root.position.z));
-
- const a=t-actionStart;
- const model=player.model;
-
- // LEG ANIMATION
-
- player.legs.forEach((leg,i)=>{
-
-  leg.rotation.x=0;
-
-  if(action==='walk'&&moving){
-   leg.rotation.x=Math.sin(walkTime+i*Math.PI)*.65;
+    c.root.position.y=Math.abs(Math.sin(time*10))*.08;
   }
 
-  if(action==='dance'){
-   leg.rotation.x=Math.sin(a*9+i*Math.PI)*.65;
+  // DANCE
+  if(c.action==="dance" && elapsed<5){
+    c.root.position.y=Math.abs(Math.sin(time*9))*.4;
+    c.body.rotation.z=Math.sin(time*7)*.25;
+    c.arms[0].rotation.z=-1.8;
+    c.arms[1].rotation.z=1.8;
+    c.legs[0].rotation.x=Math.sin(time*8)*.6;
+    c.legs[1].rotation.x=-Math.sin(time*8)*.6;
   }
 
-  if(action==='sit'){
-   leg.rotation.x=-1.1;
-  }
- });
-
- // ARM ANIMATION
-
- player.arms.forEach((arm,i)=>{
-
-  arm.rotation.set(0,0,i===0?-.12:.12);
-
-  if(action==='wave'&&i===1){
-   arm.rotation.z=-2.3+Math.sin(a*8)*.3;
+  // HUG
+  else if(c.action==="hug" && elapsed<2.5){
+    c.arms[0].rotation.z=-1.5;
+    c.arms[1].rotation.z=1.5;
+    c.body.rotation.x=-.18;
+    c.head.rotation.x=-.2;
   }
 
-  if(action==='hug'||action==='happy'){
-   arm.rotation.z=i===0?1.1:-1.1;
+  // KISS
+  else if(c.action==="kiss" && elapsed<2){
+    c.body.rotation.x=-.3;
+    c.head.rotation.x=-.45;
+    c.arms[0].rotation.z=-.7;
+    c.arms[1].rotation.z=.7;
   }
 
-  if(action==='kiss'&&i===1){
-   arm.rotation.z=-1.3;
+  // BLUSH
+  else if(c.action==="blush" && elapsed<3){
+    c.head.rotation.z=Math.sin(time*3)*.15;
+    c.head.rotation.x=.2;
+    c.leftCheek.scale.set(.17,.1,.04);
+    c.rightCheek.scale.set(.17,.1,.04);
   }
 
-  if(action==='dance'){
-   arm.rotation.z=(i===0?1:-1)+Math.sin(a*8)*.4;
+  // HAPPY
+  else if(c.action==="happy" && elapsed<2.5){
+    c.root.position.y=Math.abs(Math.sin(time*7))*.55;
+    c.arms[0].rotation.z=-2;
+    c.arms[1].rotation.z=2;
   }
 
-  if(action==='sit'){
-   arm.rotation.z=i===0?.2:-.2;
-  }
- });
-
- // BODY ANIMATION
-
- model.position.y=0;
- model.rotation.z=0;
-
- if(action==='dance'){
-  model.position.y=Math.abs(Math.sin(a*7))*.18;
-  model.rotation.z=Math.sin(a*5)*.14;
- }
-
- if(action==='happy'){
-  model.position.y=Math.abs(Math.sin(a*9))*.22;
- }
-
- if(action==='blush'){
-  model.position.y=Math.sin(a*3)*.04;
- }
-
- if(action==='sit'){
-  model.position.y=-.35;
- }
-
- // HEAD ANIMATION
-
- if(action==='kiss'){
-  player.head.rotation.x=-.22;
-
-  if(t-lastHeart>.35){
-   heartParticle();
-   lastHeart=t;
+  // SIT
+  else if(c.action==="sit"){
+    c.root.position.y=-.25;
+    c.legs[0].rotation.x=-1.1;
+    c.legs[1].rotation.x=-1.1;
+    c.body.rotation.x=.15;
+    c.arms[0].rotation.x=-.4;
+    c.arms[1].rotation.x=-.4;
   }
 
- }else{
-  player.head.rotation.x=0;
- }
-
- if(action==='hug'||action==='wave'){
-  player.head.rotation.z=Math.sin(a*3)*.08;
- }else{
-  player.head.rotation.z=0;
- }
-
- // BLUSH ANIMATION
-
- const visibleBlush=action==='blush'&&a<3;
-
- player.cheeks.forEach(c=>{
-  c.material.opacity=visibleBlush?.9:0;
- });
-
- // RETURN TO STANDING
-
- if(action!=='walk'&&action!=='sit'&&a>actionLength){
-  action='idle';
- }
-
- // FOLLOW CAMERA
-
- const distance=7;
-
- const target=new THREE.Vector3(
-  player.root.position.x,
-  1.4,
-  player.root.position.z
- );
-
- camera.position.set(
-  target.x+Math.sin(yaw)*distance,
-  target.y+2+pitch*4,
-  target.z+Math.cos(yaw)*distance
- );
-
- camera.lookAt(target);
-
- // HEART MOVEMENT
-
- for(let i=hearts.length-1;i>=0;i--){
-
-  const h=hearts[i];
-
-  h.mesh.position.y+=.025;
-  h.life-=.018;
-  h.mesh.material.opacity=Math.max(0,h.life);
-
-  if(h.life<=0){
-   scene.remove(h.mesh);
-   hearts.splice(i,1);
+  // WAVE
+  else if(c.action==="wave" && elapsed<3){
+    c.arms[1].rotation.z=2.5;
+    c.arms[1].rotation.x=Math.sin(time*9)*.7;
   }
- }
 
- renderer.render(scene,camera);
+  // STAND
+  else if(c.action==="stand"){
+    c.body.position.y=1.25;
+  }
+
+  // Return to normal after temporary reactions
+  if(elapsed>5 && c.action!=="sit"){
+    c.action="stand";
+  }
 }
 
-animate();
+// MAIN GAME LOOP
+function update(){
+  requestAnimationFrame(update);
 
-status.textContent='✨ Museum ready • Drag screen to rotate camera';
+  const delta=Math.min(clock.getDelta(),.05);
+  const time=clock.elapsedTime;
 
-// SCREEN RESIZE
+  // JOYSTICK AND KEYBOARD INPUT
+  let x=joyX;
+  let y=joyY;
 
-window.addEventListener('resize',()=>{
+  if(keys["a"]||keys["arrowleft"])x=-1;
+  if(keys["d"]||keys["arrowright"])x=1;
+  if(keys["w"]||keys["arrowup"])y=-1;
+  if(keys["s"]||keys["arrowdown"])y=1;
 
- camera.aspect=innerWidth/innerHeight;
- camera.updateProjectionMatrix();
+  const inputLength=Math.sqrt(x*x+y*y);
+  if(inputLength>1){
+    x/=inputLength;
+    y/=inputLength;
+  }
 
- renderer.setSize(innerWidth,innerHeight);
+  const speed=4.2;
+
+  const forwardX=-Math.sin(cameraAngle);
+  const forwardZ=-Math.cos(cameraAngle);
+
+  const rightX=Math.cos(cameraAngle);
+  const rightZ=-Math.sin(cameraAngle);
+
+  const dx=(rightX*x+forwardX*(-y))*speed*delta;
+  const dz=(rightZ*x+forwardZ*(-y))*speed*delta;
+
+  if(Math.abs(x)+Math.abs(y)>.05 && player.action!=="sit"){
+    player.root.position.x+=dx;
+    player.root.position.z+=dz;
+
+    player.root.position.x=THREE.MathUtils.clamp(
+      player.root.position.x,-10.5,10.5
+    );
+
+    player.root.position.z=THREE.MathUtils.clamp(
+      player.root.position.z,-13,12
+    );
+
+    player.root.rotation.y=Math.atan2(dx,dz);
+    player.moving=true;
+  }else{
+    player.moving=false;
+  }
+
+  // CHARACTER ANIMATIONS
+  animateCharacter(player,time,delta);
+  animateCharacter(partner,time,delta);
+
+  // FOLLOW CAMERA
+  const target=player.root.position;
+
+  const cameraX=target.x+Math.sin(cameraAngle)*cameraDistance;
+  const cameraZ=target.z+Math.cos(cameraAngle)*cameraDistance;
+
+  camera.position.lerp(
+    new THREE.Vector3(
+      cameraX,
+      target.y+cameraHeight,
+      cameraZ
+    ),.09
+  );
+
+  camera.lookAt(target.x,target.y+1.4,target.z);
+
+  // PARTICLES
+  for(let i=particles.length-1;i>=0;i--){
+    const p=particles[i];
+    p.mesh.position.addScaledVector(p.mesh.velocity,delta);
+    p.mesh.velocity.y-=1.5*delta;
+    p.life-=delta;
+
+    if(p.life<=0){
+      scene.remove(p.mesh);
+      particles.splice(i,1);
+    }
+  }
+
+  // LIGHT ANIMATION
+  pinkLight.intensity=85+Math.sin(time*2)*12;
+
+  renderer.render(scene,camera);
+}
+
+// INITIAL CAMERA
+camera.position.set(0,5,11);
+camera.lookAt(0,1,0);
+
+window.addEventListener("resize",()=>{
+  camera.aspect=window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth,window.innerHeight);
 });
 
-}catch(error){
+update();
 
- console.error(error);
- status.textContent='Game error: '+error.message;
-
-}
-
-}
 </script>
-
 </body>
 </html>

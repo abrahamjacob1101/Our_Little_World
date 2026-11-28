@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Little World ❤️</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;overflow:hidden;background:#171426;font-family:Arial;color:white}
+#game{width:100vw;height:100vh;display:block}
+#title{position:absolute;top:12px;width:100%;text-align:center;
+font-size:22px;color:#ffd8ec;text-shadow:0 0 12px #ff65b5;pointer-events:none}
+#joy{position:absolute;bottom:35px;left:25px;width:115px;height:115px;
+border-radius:50%;background:#ffffff30;border:2px solid #ffffff80;
+touch-action:none}
+#stick{position:absolute;width:48px;height:48px;border-radius:50%;
+background:#ffc5e3;left:32px;top:32px}
+#actions{position:absolute;right:15px;bottom:25px;display:grid;
+grid-template-columns:repeat(2,65px);gap:9px}
+button{border:1px solid #ffffff70;border-radius:18px;
+background:#a45b9dcc;color:white;padding:12px 4px;font-size:12px}
+#message{position:absolute;top:60px;width:100%;text-align:center;
+color:#ffe2f3;pointer-events:none}
+#hint{position:absolute;bottom:170px;left:12px;font-size:11px;color:#fff9}
+</style>
+</head>
+<body>
+<div id="title">Our Little World ❤️</div>
+<div id="message">Welcome to our romantic museum ✨</div>
+<div id="hint">Explore your little world</div>
+<canvas id="game"></canvas>
+<div id="joy"><div id="stick"></div></div>
+<div id="actions">
+<button onclick="react('Sending a kiss 💋')">💋 Kiss</button>
+<button onclick="react('Big warm hug 🤗')">🤗 Hug</button>
+<button onclick="react('Let's dance 💃')">💃 Dance</button>
+<button onclick="react('Feeling shy 🥰')">🥰 Blush</button>
+<button onclick="react('So happy ❤️')">❤️ Happy</button>
+<button onclick="react('Come sit with me 🪑')">🪑 Sit</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x24172f);
+scene.fog=new THREE.Fog(0x24172f,15,45);
+
+const camera=new THREE.PerspectiveCamera(65,innerWidth/innerHeight,.1,100);
+const renderer=new THREE.WebGLRenderer({
+canvas:document.getElementById('game'),antialias:true
+});
+renderer.setSize(innerWidth,innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+
+scene.add(new THREE.HemisphereLight(0xffd5ed,0x40304e,2));
+const light=new THREE.PointLight(0xffaadd,35,30);
+light.position.set(0,7,0);
+scene.add(light);
+
+function box(w,h,d,x,y,z,color){
+const mesh=new THREE.Mesh(
+new THREE.BoxGeometry(w,h,d),
+new THREE.MeshStandardMaterial({color,roughness:.8})
+);
+mesh.position.set(x,y,z);
+scene.add(mesh);
+return mesh;
+}
+
+// Museum floor and walls
+box(30,.3,30,0,-.2,0,0x684a72);
+box(30,9,.4,0,4.3,-15,0x54375e);
+box(.4,9,30,-15,4,0,0x54375e);
+box(.4,9,30,15,4,0,0x54375e);
+
+// Decorative pillars
+for(let x=-12;x<=12;x+=6){
+box(.6,7,.6,x,3.3,-10,0xc08ab5);
+}
+
+// Framed memories
+for(let x=-10;x<=10;x+=5){
+box(2.5,2.5,.25,x,3,-14.5,0xe7b5d4);
+box(2.1,2.1,.12,x,3,-14.3,0x8e648e);
+}
+
+// Romantic bench
+box(3,.25,.9,0,.8,-3,0xd58ab5);
+box(3,.2,.25,0,1.5,-3.35,0xd58ab5);
+for(let x=-1.2;x<=1.2;x+=2.4){
+box(.18,.8,.18,x,.4,-3,0x74425f);
+}
+
+// Simple starter character
+const player=new THREE.Group();
+const body=new THREE.Mesh(
+new THREE.CylinderGeometry(.35,.4,1,16),
+new THREE.MeshStandardMaterial({color:0x9bc9ff})
+);
+body.position.y=1;
+player.add(body);
+const head=new THREE.Mesh(
+new THREE.SphereGeometry(.35,20,20),
+new THREE.MeshStandardMaterial({color:0xffd6bd})
+);
+head.position.y=1.8;
+player.add(head);
+scene.add(player);
+player.position.set(0,0,5);
+
+camera.position.set(0,4,10);
+
+let moveX=0,moveY=0;
+const joy=document.getElementById('joy');
+const stick=document.getElementById('stick');
+
+function joystick(e){
+const r=joy.getBoundingClientRect();
+let x=e.clientX-r.left-r.width/2;
+let y=e.clientY-r.top-r.height/2;
+const max=35;
+const len=Math.hypot(x,y);
+if(len>max){x=x/len*max;y=y/len*max}
+stick.style.left=(32+x)+'px';
+stick.style.top=(32+y)+'px';
+moveX=x/max;
+moveY=y/max;
+}
+joy.addEventListener('pointerdown',e=>{
+joy.setPointerCapture(e.pointerId);
+joystick(e);
+});
+joy.addEventListener('pointermove',e=>{
+if(e.buttons)joystick(e);
+});
+function stop(){
+moveX=0;moveY=0;
+stick.style.left='32px';
+stick.style.top='32px';
+}
+joy.addEventListener('pointerup',stop);
+joy.addEventListener('pointercancel',stop);
+
+function react(text){
+document.getElementById('message').textContent=text;
+}
+
+function animate(){
+requestAnimationFrame(animate);
+player.position.x+=moveX*.075;
+player.position.z+=moveY*.075;
+player.position.x=Math.max(-13,Math.min(13,player.position.x));
+player.position.z=Math.max(-13,Math.min(13,player.position.z));
+
+camera.position.x=player.position.x;
+camera.position.z=player.position.z+6;
+camera.lookAt(player.position.x,1,player.position.z);
+
+renderer.render(scene,camera);
+}
+animate();
+
+window.addEventListener('resize',()=>{
+camera.aspect=innerWidth/innerHeight;
+camera.updateProjectionMatrix();
+renderer.setSize(innerWidth,innerHeight);
+});
+</script>
+</body>
+</html>
